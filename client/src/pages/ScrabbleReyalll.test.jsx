@@ -6,8 +6,7 @@ import Gambar2 from "/anjingkucing2.png";
 
 const ScrabbleGame = () => {
   // Shuffle Words
-  // const wordList = ["WATERMELON", "APPLE", "ORANGE", "BERRY", "AVOCADO"];
-  const wordList = ["ACT", "ACT"];
+  const wordList = ["APPLE", "ORANGE", "WATERMELON", "BERRY", "AVOCADO"];
   const shuffleWord = (word) => {
     return word
       .split("")
@@ -21,10 +20,11 @@ const ScrabbleGame = () => {
   const [selectedIndices, setSelectedIndices] = useState([]);
   const [filledWord, setFilledWord] = useState("");
   const [score, setScore] = useState(0);
+  // const [notification, setNotification] = useState("");
+  // const [showNotification, setShowNotification] = useState(false);
   const [time, setTime] = useState(60);
   const [isCorrect, setIsCorrect] = useState(false);
   const [isShake, setIsShake] = useState(false);
-  const [isGameOver, setIsGameOver] = useState(false);
 
   // Navigation
   const navigate = useNavigate();
@@ -36,13 +36,13 @@ const ScrabbleGame = () => {
 
   // Timer
   useEffect(() => {
-    if (time > 0 && !isCorrect && !isGameOver) {
+    if (time > 0 && !isCorrect) {
       const timer = setTimeout(() => setTime(time - 1), 1000);
       return () => clearTimeout(timer);
     } else if (time === 0) {
       handleNextScrabble();
     }
-  }, [time, isCorrect, isGameOver]);
+  }, [time, isCorrect]);
 
   // Click word to fill blank space
   const handleCharacterClick = (char, index) => {
@@ -57,10 +57,15 @@ const ScrabbleGame = () => {
       if (filledWord === wordList[currentQuestionIndex]) {
         const pointsEarned = 1;
         setScore(score + pointsEarned);
+        // setNotification(`Awesome! +${pointsEarned} point`);
         setIsCorrect(true);
-        setTimeout(() => handleNextScrabble(), 3000); // Delay to show "awesome!" before moving to the next word
+        setTimeout(() => handleNextScrabble(), 3000);
       } else {
         triggerShakeEffect();
+        setTimeout(() => {
+          setSelectedIndices([]);
+          setFilledWord("");
+        }, 2000);
       }
     }
   }, [filledWord]);
@@ -71,9 +76,7 @@ const ScrabbleGame = () => {
       setSelectedIndices([]);
       setFilledWord("");
       setTime(60);
-      setIsCorrect(false);
     } else {
-      setIsGameOver(true);
       endGame();
     }
   };
@@ -87,20 +90,12 @@ const ScrabbleGame = () => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ name: userName, score: score + 1 }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data.message);
-      })
-      .catch((error) => {
-        console.error("Error saving score:", error);
-      });
+      body: JSON.stringify({ name: userName, score: score }),
+    });
 
     setTimeout(() => {
-      localStorage.clear();
-      navigate("/");
-    }, 3000);
+      navigate("/"), 3000;
+    });
   };
 
   // Shake Effect
@@ -128,20 +123,19 @@ const ScrabbleGame = () => {
               awesome!
             </h1>
           </div>
-        ) : isGameOver ? (
-          <div>
-            <h1
-              className={`text-[8em] font-aptos-semibold uppercase leading-none mt-[5rem] ${styleGradient}`}
-            >
-              times up!
-            </h1>
-            <p
-              className={`text-[5em] font-aptos-semibold uppercase leading-none mt-[5rem] ${styleGradient}`}
-            >
-              you have <br /> completed the game
-            </p>
-          </div>
         ) : (
+          // <div>
+          //   <h1
+          //     className={`text-[8em] font-aptos-semibold uppercase leading-none mt-[5rem] ${styleGradient}`}
+          //   >
+          //     times up!
+          //   </h1>
+          //   <p
+          //     className={`text-[5em] font-aptos-semibold uppercase leading-none mt-[5rem] ${styleGradient}`}
+          //   >
+          //     you are <br /> run out of time
+          //   </p>
+          // </div>
           <div>
             {/* Countdown */}
             <h1 className={`text-[10rem] mt-[1vh] font-uptos ${styleGradient}`}>
@@ -149,7 +143,7 @@ const ScrabbleGame = () => {
             </h1>
             {/* Blank space */}
             <div
-              className={`flex flex-wrap items-center gap-4 mt-[4vh] ${
+              className={`flex items-center gap-4 mt-[4vh] ${
                 isShake ? "shake" : ""
               }`}
             >
@@ -165,7 +159,7 @@ const ScrabbleGame = () => {
               ))}
             </div>
             {/* Words */}
-            <div className="relative z-10">
+            <div>
               <h2
                 className={`text-[7rem] mt-[1vh] font-aptos-semibold ${styleGradient}`}
               >

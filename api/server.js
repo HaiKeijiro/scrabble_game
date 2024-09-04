@@ -10,7 +10,7 @@ const app = express();
 // });
 
 const db = new sqlite.Database(
-  "./database.db",
+  "./scrabble.db",
   sqlite.OPEN_READWRITE | sqlite.OPEN_CREATE,
   (err) => {
     if (err) {
@@ -39,12 +39,13 @@ app.post("/api/save", (req, res) => {
       if (err) {
         return res.status(500).json({ error: err.message });
       }
+      // Send response only once, after the database operation is complete
       res.json({ message: "User score saved!" });
     }
   );
 
-  // console.log("Received data:", { name, score });
-  // res.json({ message: "Received data logged successfully" });
+  // Log received data to the server console (for debugging purposes)
+  console.log("Received data:", { name, score });
 });
 
 app.get("/api/export", (req, res) => {

@@ -7,6 +7,7 @@ function Register() {
   const [name, setName] = useState(""); // State to manage input value
   const navigate = useNavigate(); // Hook to programmatically navigate
 
+  // Save to local storage
   const handleSubmit = () => {
     if (name.trim()) {
       localStorage.setItem("userName", name); // Save name to localStorage
@@ -14,10 +15,16 @@ function Register() {
     }
   };
 
+  // Gradient text
+  const styleGradient =
+    "bg-gradient-to-r from-[#E1BD82] to-[#A1783F] bg-clip-text text-transparent";
+
   return (
     <MainLayout>
       <div className="flex flex-col justify-center items-center px-[5rem]">
-        <h1 className="text-[5rem] text-main text-center uppercase mt-[5rem]">
+        <h1
+          className={`text-[5em] text-center uppercase mt-[5rem] font-aptos-semibold ${styleGradient}`}
+        >
           fast! <br /> and get the prize
         </h1>
         <div className="flex flex-col items-start w-full">

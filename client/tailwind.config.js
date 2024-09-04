@@ -4,7 +4,9 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        uptos: ["Uptos", "sans-serif"],
+        "aptos-bold": ["aptos-bold", "sans-serif"],
+        "aptos-semibold": ["aptos-semibold", "sans-serif"],
+        "aptos-extrabold": ["aptos-extrabold", "sans-serif"],
         gotham: ["Gotham", "sans-serif"],
       },
       colors: {

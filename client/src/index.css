@@ -4,22 +4,29 @@
 
 /* Font face */
 @font-face {
-  font-family: "aptos";
-  src: url("/public/fonts/fonnts.com-aptos-bold.ttf");
-  font-weight: normal;
-  font-style: normal;
+  font-family: "aptos-bold";
+  src: url("/fonts/fonnts.com-aptos-bold.ttf");
 }
 
 @font-face {
-  font-family: "gotham-bold";
-  src: url("/public/fonts/GothamBold.ttf");
+  font-family: "aptos-semibold";
+  src: url("/fonts/fonnts.com-aptos-semibold.ttf");
+}
+
+@font-face {
+  font-family: "aptos-extrabold";
+  src: url("/fonts/fonnts.com-aptos-extrabold.ttf");
+}
+
+@font-face {
+  font-family: "gotham";
+  src: url("/fonts/GothamBold.ttf");
   font-weight: normal;
   font-style: normal;
 }
 
 * {
   @apply m-0 p-2 box-border;
-  @apply font-uptos;
 }
 
 body {

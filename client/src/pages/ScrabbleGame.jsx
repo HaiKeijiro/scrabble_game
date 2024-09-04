@@ -1,11 +1,16 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 import MainLayout from "../layouts/MainLayout";
 import Hewan from "/anjingkucing.png";
 
 const questions = [
-  { id: 1, word: "APPLE", scrambled: "LONRPAPE" },
+  { id: 1, word: "APPLE", scrambled: "LONPAPE" },
   { id: 2, word: "ORANGE", scrambled: "AGNROEGB" },
-  // { id: 3, word: "BANANA", scrambled: "NABANABU" },
+  { id: 3, word: "BANANA", scrambled: "NABANABU" },
+  { id: 4, word: "BANANA", scrambled: "NABANABU" },
+  { id: 5, word: "BANANA", scrambled: "NABANABU" },
+  { id: 6, word: "BANANA", scrambled: "NABANABU" },
+  { id: 7, word: "BANANA", scrambled: "NABANABU" },
   // Add more questions here...
 ];
 
@@ -17,7 +22,7 @@ const ScrabbleGame = () => {
         currentQuestion: 0,
         selectedIndices: [],
         filledWord: "",
-        time: 120,
+        time: 10,
         score: 0,
         notification: "",
         showNotification: false,
@@ -27,6 +32,7 @@ const ScrabbleGame = () => {
   };
 
   const [state, setState] = useState(initialState);
+  const navigate = useNavigate(); // Initialize useNavigate
 
   useEffect(() => {
     localStorage.setItem("gameState", JSON.stringify(state));
@@ -77,14 +83,10 @@ const ScrabbleGame = () => {
   const handleTimesUp = () => {
     setState((prevState) => ({
       ...prevState,
-      // notification: "Time's Up!",
       showNotification: true,
     }));
     setTimeout(() => handleNextQuestion(), 2000);
   };
-
-  console.log(state.currentQuestion);
-  console.log(questions.length);
 
   const handleNextQuestion = () => {
     if (state.currentQuestion < questions.length - 1) {
@@ -93,7 +95,7 @@ const ScrabbleGame = () => {
         currentQuestion: prevState.currentQuestion + 1,
         selectedIndices: [],
         filledWord: "",
-        time: 120,
+        time: 10,
         notification: "",
         showNotification: false,
       }));
@@ -103,14 +105,32 @@ const ScrabbleGame = () => {
   };
 
   const endGame = () => {
+    // Save the user's name and score to the database
+    const userName = localStorage.getItem("userName");
+
+    fetch("http://localhost:4000/api/save", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ name: userName, score: state.score + 1 }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data.message);
+      });
+
     setState((prevState) => ({
       ...prevState,
-      // notification: `Game Over! Your score: ${prevState.score}`,
       notification: "times up!",
       desc: "You are...<br />out of time",
       showNotification: true,
     }));
-    localStorage.removeItem("gameState");
+
+    setTimeout(() => {
+      localStorage.removeItem("gameState");
+      navigate("/"); // Redirect after timeout
+    }, 3000); // Adjust the timeout duration as needed
   };
 
   const triggerShakeEffect = () => {

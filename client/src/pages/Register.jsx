@@ -1,9 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import MainLayout from "../layouts/MainLayout";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 import Hewan from "/anjingkucing2.png";
 
 function Register() {
+  const [name, setName] = useState(""); // State to manage input value
+  const navigate = useNavigate(); // Hook to programmatically navigate
+
+  const handleSubmit = () => {
+    if (name.trim()) {
+      localStorage.setItem("userName", name); // Save name to localStorage
+      navigate("/scrabble"); // Navigate to Scrabble page
+    }
+  };
+
   return (
     <MainLayout>
       <div className="flex flex-col justify-center items-center px-[5rem]">
@@ -18,11 +28,16 @@ function Register() {
             type="text"
             placeholder="Your Name"
             className="text-[3rem] rounded-full px-[4rem] mt-[1rem] w-full"
+            value={name}
+            onChange={(e) => setName(e.target.value)} // Update state on input change
             required
           />
         </div>
-        <button className="bg-[#FFD388] text-[3rem] uppercase px-[5vw] py-[1vh] rounded-[2rem] mt-[3rem]">
-          <Link to="scrabble">register</Link>
+        <button
+          className="bg-[#FFD388] text-[3rem] uppercase px-[5vw] py-[1vh] rounded-[2rem] mt-[3rem]"
+          onClick={handleSubmit} // Call handleSubmit on button click
+        >
+          Register
         </button>
       </div>
       <img src={Hewan} alt="hewan.png" className="bg-cover w-[100%] mx-auto" />

@@ -4,13 +4,11 @@ import MainLayout from "../layouts/MainLayout";
 import Hewan from "/anjingkucing.png";
 
 const questions = [
-  { id: 1, word: "APPLE", scrambled: "LONPAPE" },
+  { id: 1, word: "APPLEEEEEEEEEEE", scrambled: "LONPAPE" },
   { id: 2, word: "ORANGE", scrambled: "AGNROEGB" },
-  { id: 3, word: "BANANA", scrambled: "NABANABU" },
-  { id: 4, word: "BANANA", scrambled: "NABANABU" },
-  { id: 5, word: "BANANA", scrambled: "NABANABU" },
-  { id: 6, word: "BANANA", scrambled: "NABANABU" },
-  { id: 7, word: "BANANA", scrambled: "NABANABU" },
+  { id: 3, word: "BANANA", scrambled: "AGNROEGB" },
+  { id: 4, word: "WATERMELON", scrambled: "TERWALEMONTEA" },
+  { id: 5, word: "RANDOM", scrambled: "DOMNARDST" },
   // Add more questions here...
 ];
 
@@ -22,7 +20,7 @@ const ScrabbleGame = () => {
         currentQuestion: 0,
         selectedIndices: [],
         filledWord: "",
-        time: 10,
+        time: 1000,
         score: 0,
         notification: "",
         showNotification: false,
@@ -32,7 +30,7 @@ const ScrabbleGame = () => {
   };
 
   const [state, setState] = useState(initialState);
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
 
   useEffect(() => {
     localStorage.setItem("gameState", JSON.stringify(state));
@@ -95,7 +93,7 @@ const ScrabbleGame = () => {
         currentQuestion: prevState.currentQuestion + 1,
         selectedIndices: [],
         filledWord: "",
-        time: 10,
+        time: 1000,
         notification: "",
         showNotification: false,
       }));
@@ -158,7 +156,7 @@ const ScrabbleGame = () => {
             </div>
 
             <div
-              className={`flex justify-center mt-[3vh] gap-4 ${
+              className={`flex flex-wrap w-[90%] mt-[3vh] bg-red-500 gap-x-4 gap-y-10 ${
                 state.shake ? "shake" : ""
               }`}
             >
@@ -167,7 +165,7 @@ const ScrabbleGame = () => {
                 .map((_, index) => (
                   <div
                     key={index}
-                    className="text-4xl border-b-[.5vh] border-main w-[10vw] h-10 flex items-center justify-center"
+                    className="text-4xl mx-auto border-b-[.5vh] border-main w-[10vw] h-10 flex items-center justify-center"
                   >
                     {state.filledWord[index] || ""}
                   </div>

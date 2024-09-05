@@ -1,9 +1,9 @@
 import React from "react";
 import MainLayout from "../layouts/MainLayout";
 import { Link } from "react-router-dom";
+import Hewan from "/anjingkucing.png";
 
 function StartPage() {
-
   // Gradient text
   const styleGradient =
     "bg-gradient-to-r from-[#E1BD82] to-[#A1783F] bg-clip-text text-transparent";
@@ -22,6 +22,13 @@ function StartPage() {
         >
           join now
         </Link>
+      </div>
+      <div className="absolute bottom-10 right-0 left-0">
+        <img
+          src={Hewan}
+          alt="hewan.png"
+          className="bg-cover w-[100%] mx-auto -z-10"
+        />
       </div>
     </MainLayout>
   );

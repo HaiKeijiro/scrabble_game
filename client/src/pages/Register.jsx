@@ -47,7 +47,13 @@ function Register() {
           Register
         </button>
       </div>
-      <img src={Hewan} alt="hewan.png" className="bg-cover w-[100%] mx-auto" />
+      <div className="absolute bottom-10 right-0 left-0">
+        <img
+          src={Hewan}
+          alt="hewan.png"
+          className="bg-cover w-[100%] mx-auto -z-10"
+        />
+      </div>
     </MainLayout>
   );
 }

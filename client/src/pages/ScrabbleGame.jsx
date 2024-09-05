@@ -7,7 +7,18 @@ import Gambar2 from "/anjingkucing2.png";
 const ScrabbleGame = () => {
   // Shuffle Words
   // const wordList = ["WATERMELON", "APPLE", "ORANGE", "BERRY", "AVOCADO"];
-  const wordList = ["ACT", "ACT"];
+  const wordList = [
+    "kolostrum",
+    "probiotik",
+    "antioksidan",
+    "prebiotik",
+    "protein",
+    "omega",
+    "starter",
+    "performance",
+    "sensitif",
+    "metabolisme",
+  ].map((word) => word.toUpperCase()); // ini
   const shuffleWord = (word) => {
     return word
       .split("")
@@ -21,10 +32,11 @@ const ScrabbleGame = () => {
   const [selectedIndices, setSelectedIndices] = useState([]);
   const [filledWord, setFilledWord] = useState("");
   const [score, setScore] = useState(0);
-  const [time, setTime] = useState(60);
+  const [time, setTime] = useState(1);
   const [isCorrect, setIsCorrect] = useState(false);
   const [isShake, setIsShake] = useState(false);
   const [isGameOver, setIsGameOver] = useState(false);
+  const [isTimeOver, setIsTimeOver] = useState(false);
 
   // Navigation
   const navigate = useNavigate();
@@ -40,7 +52,8 @@ const ScrabbleGame = () => {
       const timer = setTimeout(() => setTime(time - 1), 1000);
       return () => clearTimeout(timer);
     } else if (time === 0) {
-      handleNextScrabble();
+      setIsTimeOver(true);
+      setTimeout(() => handleNextScrabble(), 3000);
     }
   }, [time, isCorrect, isGameOver]);
 
@@ -55,7 +68,7 @@ const ScrabbleGame = () => {
   useEffect(() => {
     if (filledWord.length === wordList[currentQuestionIndex].length) {
       if (filledWord === wordList[currentQuestionIndex]) {
-        const pointsEarned = 1;
+        const pointsEarned = 1 * 10;
         setScore(score + pointsEarned);
         setIsCorrect(true);
         setTimeout(() => handleNextScrabble(), 3000); // Delay to show "awesome!" before moving to the next word
@@ -70,16 +83,19 @@ const ScrabbleGame = () => {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
       setSelectedIndices([]);
       setFilledWord("");
-      setTime(60);
+      setTime(1);
       setIsCorrect(false);
+      setIsTimeOver(false);
     } else {
       setIsGameOver(true);
-      endGame();
     }
   };
 
+  const handleReset = () => {
+    endGame();
+  };
+
   const endGame = () => {
-    alert("you've finished the game!");
     const userName = localStorage.getItem("userName");
 
     fetch("http://localhost:4000/api/save", {
@@ -130,6 +146,25 @@ const ScrabbleGame = () => {
           </div>
         ) : isGameOver ? (
           <div>
+            <p
+              className={`text-[5em] font-aptos-semibold uppercase leading-none mt-[5rem] ${styleGradient}`}
+            >
+              your <br /> scrabble score
+            </p>
+            <h1
+              className={`text-[8em] font-aptos-semibold uppercase leading-none mt-[5rem] ${styleGradient}`}
+            >
+              {score}
+            </h1>
+            <button
+              className="bg-[#FFD388] text-[3rem] uppercase px-[5vw] py-[1vh] rounded-[2rem] mt-[3rem]"
+              onClick={handleReset}
+            >
+              thank you
+            </button>
+          </div>
+        ) : isTimeOver ? (
+          <div>
             <h1
               className={`text-[8em] font-aptos-semibold uppercase leading-none mt-[5rem] ${styleGradient}`}
             >
@@ -138,27 +173,34 @@ const ScrabbleGame = () => {
             <p
               className={`text-[5em] font-aptos-semibold uppercase leading-none mt-[5rem] ${styleGradient}`}
             >
-              you have <br /> completed the game
+              you are <br /> run out of time
             </p>
           </div>
         ) : (
           <div>
             {/* Countdown */}
-            <h1 className={`text-[10rem] mt-[1vh] font-uptos ${styleGradient}`}>
+            <h1
+              className={`text-[10em] font-uptos leading-none ${styleGradient}`}
+            >
               {time}
             </h1>
+            <p
+              className={`text-[5em] font-uptos leading-none ${styleGradient}`}
+            >
+              Score: {score}
+            </p>
             {/* Blank space */}
             <div
-              className={`flex flex-wrap items-center gap-4 mt-[4vh] ${
+              className={`grid grid-cols-[repeat(auto-fit,_minmax(10px,_1fr))] gap-x-5 mt-[2rem] ${
                 isShake ? "shake" : ""
               }`}
             >
               {wordList[currentQuestionIndex].split("").map((_, index) => (
                 <div
                   key={index}
-                  className="mx-auto border-b-[.5vh] border-main w-[10vw] h-10 flex items-center justify-center p-10"
+                  className="mx-auto border-b-[.5vh] border-main flex items-center justify-center w-full h-14"
                 >
-                  <h2 className="text-[3em] font-aptos-semibold text-main">
+                  <h2 className="text-[3em] text-main font-aptos-semibold uppercase">
                     {filledWord[index] || ""}
                   </h2>
                 </div>
@@ -167,14 +209,14 @@ const ScrabbleGame = () => {
             {/* Words */}
             <div className="relative z-10">
               <h2
-                className={`text-[7rem] mt-[1vh] font-aptos-semibold ${styleGradient}`}
+                className={`text-[6em] mt-[1vh] font-aptos-semibold ${styleGradient}`}
               >
                 {scrambledWord.split("").map((char, index) => (
                   <button
                     key={index}
                     onClick={() => handleCharacterClick(char, index)}
                     disabled={selectedIndices.includes(index)}
-                    className={`rounded ${
+                    className={`rounded uppercase ${
                       selectedIndices.includes(index)
                         ? "opacity-50 cursor-not-allowed"
                         : ""

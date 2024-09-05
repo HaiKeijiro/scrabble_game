@@ -5,9 +5,6 @@ import cors from "cors";
 import { Parser } from "json2csv";
 
 const app = express();
-// const db = new sqlite.Database("./scrabble.db", sqlite.OPEN_READWRITE, (err) => {
-//   if (err) return console.error(err.message);
-// });
 
 const db = new sqlite.Database(
   "./scrabble.db",
@@ -17,18 +14,28 @@ const db = new sqlite.Database(
       console.error("Error opening database:", err.message);
     } else {
       console.log("Connected to the SQLite database.");
+
+      // Create the users table if it doesn't exist
+      db.run(
+        `CREATE TABLE IF NOT EXISTS users (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          name TEXT NOT NULL,
+          score INTEGER NOT NULL
+        )`,
+        (err) => {
+          if (err) {
+            console.error("Error creating users table:", err.message);
+          } else {
+            console.log("Users table is ready.");
+          }
+        }
+      );
     }
   }
 );
 
 app.use(cors());
 app.use(express.json());
-
-// db.serialize(() => {
-//   db.run(
-//     "CREATE TABLE users (id INTEGER PRIMARY KEY, name TEXT, score INTEGER)"
-//   );
-// });
 
 app.post("/api/save", (req, res) => {
   const { name, score } = req.body;
@@ -39,12 +46,10 @@ app.post("/api/save", (req, res) => {
       if (err) {
         return res.status(500).json({ error: err.message });
       }
-      // Send response only once, after the database operation is complete
       res.json({ message: "User score saved!" });
     }
   );
 
-  // Log received data to the server console (for debugging purposes)
   console.log("Received data:", { name, score });
 });
 

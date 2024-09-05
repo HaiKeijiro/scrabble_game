@@ -38,6 +38,8 @@ const ScrabbleGame = () => {
   const [isGameOver, setIsGameOver] = useState(false);
   const [isTimeOver, setIsTimeOver] = useState(false);
 
+  localStorage.setItem("userScore", score);
+
   // Navigation
   const navigate = useNavigate();
 
@@ -97,13 +99,14 @@ const ScrabbleGame = () => {
 
   const endGame = () => {
     const userName = localStorage.getItem("userName");
+    const userScore = localStorage.getItem("userScore");
 
     fetch("http://localhost:4000/api/save", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ name: userName, score: score + 1 }),
+      body: JSON.stringify({ name: userName, score: userScore }),
     })
       .then((response) => response.json())
       .then((data) => {
@@ -193,7 +196,7 @@ const ScrabbleGame = () => {
             <div
               className={`grid grid-cols-[repeat(auto-fit,_minmax(5rem,_1fr))] gap-10 mt-[2rem] ${
                 isShake ? "shake" : ""
-              }`}
+              } `}
             >
               {wordList[currentQuestionIndex].split("").map((_, index) => (
                 <div

@@ -34,7 +34,7 @@ function Register() {
           <input
             type="text"
             placeholder="Your Name"
-            className="text-[3rem] rounded-full px-[4rem] mt-[1rem] w-full"
+            className="text-[3rem] rounded-full px-[4rem] mt-[1rem] w-full uppercase"
             value={name}
             onChange={(e) => setName(e.target.value)} // Update state on input change
             required

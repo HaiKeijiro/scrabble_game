@@ -32,7 +32,7 @@ const ScrabbleGame = () => {
   const [selectedIndices, setSelectedIndices] = useState([]);
   const [filledWord, setFilledWord] = useState("");
   const [score, setScore] = useState(0);
-  const [time, setTime] = useState(1);
+  const [time, setTime] = useState(60);
   const [isCorrect, setIsCorrect] = useState(false);
   const [isShake, setIsShake] = useState(false);
   const [isGameOver, setIsGameOver] = useState(false);
@@ -83,7 +83,7 @@ const ScrabbleGame = () => {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
       setSelectedIndices([]);
       setFilledWord("");
-      setTime(1);
+      setTime(60);
       setIsCorrect(false);
       setIsTimeOver(false);
     } else {
@@ -136,15 +136,7 @@ const ScrabbleGame = () => {
   return (
     <MainLayout>
       <div className="w-4/5 mx-auto text-center">
-        {isCorrect ? (
-          <div className="h-full mt-[15rem]">
-            <h1
-              className={`text-[8em] font-aptos-semibold uppercase leading-none ${styleGradient}`}
-            >
-              awesome!
-            </h1>
-          </div>
-        ) : isGameOver ? (
+        {isGameOver ? (
           <div>
             <p
               className={`text-[5em] font-aptos-semibold uppercase leading-none mt-[5rem] ${styleGradient}`}
@@ -162,6 +154,14 @@ const ScrabbleGame = () => {
             >
               thank you
             </button>
+          </div>
+        ) : isCorrect ? (
+          <div className="h-full mt-[15rem]">
+            <h1
+              className={`text-[8em] font-aptos-semibold uppercase leading-none ${styleGradient}`}
+            >
+              awesome!
+            </h1>
           </div>
         ) : isTimeOver ? (
           <div>

@@ -191,7 +191,7 @@ const ScrabbleGame = () => {
             </p>
             {/* Blank space */}
             <div
-              className={`grid grid-cols-[repeat(auto-fit,_minmax(10px,_1fr))] gap-x-5 mt-[2rem] ${
+              className={`grid grid-cols-[repeat(auto-fit,_minmax(5rem,_1fr))] gap-10 mt-[2rem] ${
                 isShake ? "shake" : ""
               }`}
             >
